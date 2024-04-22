@@ -2,18 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:splitsync/Authentication/Screens/Welcome/welcome_screen.dart';
 import 'package:splitsync/utils/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // import 'package:firebase_auth/firebase_auth.dart';
 String? userDataString;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+  String apiKey = dotenv.env['API_KEY'] as String;
+  String appId = dotenv.env['APP_ID'] as String;
+  String messagingSenderId = dotenv.env['MESSAGE_SENDER_ID'] as String;
+  String projectId = dotenv.env['PROJECT_ID'] as String;
   try {
     await Firebase.initializeApp(
-      options: const FirebaseOptions(
-        apiKey: "AIzaSyCEfEzOPcz42L8ynU8HNL6eYMe8Y8zbDcs",
-        appId: "1:365523796398:android:1880d172323edf32ff883f",
-        messagingSenderId: "365523796398",
-        projectId: "splitsync-91f14",
+      options: FirebaseOptions(
+        apiKey: apiKey,
+        appId: appId,
+        messagingSenderId: messagingSenderId,
+        projectId: projectId,
       ),
     );
   } catch (e) {
@@ -27,7 +33,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
-  @override 
+  @override
   Widget build(BuildContext context) {
     reduce == false;
     return MaterialApp(
