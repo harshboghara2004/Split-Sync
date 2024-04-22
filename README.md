@@ -1,7 +1,5 @@
-<<<<<<< HEAD
-# ReferralBridge
 =======
-# splitsync
+# Splitsync
 
 A new Flutter project.
 
