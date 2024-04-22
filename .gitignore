@@ -6,4 +6,8 @@
 /linux
 /windows
 /web
+.flutter-plugins
+.flutter-plugins-dependencies
+firebase.json
+pubspec.lock
 *.env
