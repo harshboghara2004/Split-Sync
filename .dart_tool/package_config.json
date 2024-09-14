@@ -63,9 +63,9 @@
     },
     {
       "name": "cupertino_icons",
-      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.6",
+      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.8",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.1"
     },
     {
       "name": "fake_async",
@@ -111,9 +111,9 @@
     },
     {
       "name": "firebase_core_platform_interface",
-      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/firebase_core_platform_interface-5.0.0",
+      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/firebase_core_platform_interface-5.2.1",
       "packageUri": "lib/",
-      "languageVersion": "2.18"
+      "languageVersion": "3.2"
     },
     {
       "name": "firebase_core_web",
@@ -273,9 +273,9 @@
     },
     {
       "name": "path_provider_windows",
-      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/path_provider_windows-2.2.1",
+      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/path_provider_windows-2.3.0",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.2"
     },
     {
       "name": "petitparser",
@@ -285,9 +285,9 @@
     },
     {
       "name": "platform",
-      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/platform-3.1.4",
+      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/platform-3.1.5",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.2"
     },
     {
       "name": "plugin_platform_interface",
@@ -321,21 +321,21 @@
     },
     {
       "name": "shared_preferences_foundation",
-      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/shared_preferences_foundation-2.3.5",
+      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/shared_preferences_foundation-2.5.0",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.2"
     },
     {
       "name": "shared_preferences_linux",
-      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/shared_preferences_linux-2.3.2",
+      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/shared_preferences_linux-2.4.0",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.2"
     },
     {
       "name": "shared_preferences_platform_interface",
-      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/shared_preferences_platform_interface-2.3.2",
+      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/shared_preferences_platform_interface-2.4.1",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.2"
     },
     {
       "name": "shared_preferences_web",
@@ -345,9 +345,9 @@
     },
     {
       "name": "shared_preferences_windows",
-      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/shared_preferences_windows-2.3.2",
+      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/shared_preferences_windows-2.4.0",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.2"
     },
     {
       "name": "sky_engine",
@@ -411,7 +411,7 @@
     },
     {
       "name": "uuid",
-      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/uuid-4.4.0",
+      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/uuid-4.5.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -424,12 +424,6 @@
     {
       "name": "web",
       "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/web-0.3.0",
-      "packageUri": "lib/",
-      "languageVersion": "3.2"
-    },
-    {
-      "name": "win32",
-      "rootUri": "file:///Users/harsh/.pub-cache/hosted/pub.dev/win32-5.2.0",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
@@ -452,7 +446,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-04-22T17:30:59.348182Z",
+  "generated": "2024-09-14T05:00:52.427438Z",
   "generator": "pub",
   "generatorVersion": "3.2.6"
 }
