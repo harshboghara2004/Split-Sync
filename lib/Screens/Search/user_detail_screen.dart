@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:splitsync/Authentication/Screens/Welcome/welcome_screen.dart';
 import 'package:splitsync/Database/friends_data.dart';
 import 'package:splitsync/Database/group_data.dart';
 import 'package:splitsync/Database/users_data.dart';
@@ -82,7 +83,9 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
   @override
   Widget build(BuildContext context) {
     currentUser = Provider.of<UserProvider>(context).currentUser;
-
+    if (currentUser == null) {
+      return const WelcomeScreen();
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.user.username),

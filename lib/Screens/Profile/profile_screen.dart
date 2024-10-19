@@ -10,7 +10,10 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    User currentUser = Provider.of<UserProvider>(context).currentUser!;
+    User? currentUser = Provider.of<UserProvider>(context).currentUser;
+    if (currentUser == null) {
+      return const WelcomeScreen();
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:splitsync/Authentication/Screens/Welcome/welcome_screen.dart';
 import 'package:splitsync/Database/group_data.dart';
 import 'package:splitsync/Models/group.dart';
 import 'package:splitsync/Models/user.dart';
@@ -23,12 +24,15 @@ class _GroupScreenState extends State<GroupScreen> {
   @override
   Widget build(BuildContext context) {
     final currentUser = Provider.of<UserProvider>(context).currentUser;
+    if (currentUser == null) {
+      return const WelcomeScreen();
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Groups'),
       ),
       body: FutureBuilder(
-        future: _getGroups(currentUser!),
+        future: _getGroups(currentUser),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(

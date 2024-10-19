@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:splitsync/Authentication/Screens/Welcome/welcome_screen.dart';
 import 'package:splitsync/Models/user.dart';
 import 'package:splitsync/Screens/Friends/friend_detail_screen.dart';
 import 'package:splitsync/utils/user_provider.dart';
@@ -18,13 +19,16 @@ class UserCardFriend extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     // print(currentUser.username);
     User? currentUser = Provider.of<UserProvider>(context).currentUser;
+    if (currentUser == null) {
+      return const WelcomeScreen();
+    }
     return Card(
       margin: screenWidth > 800
           ? const EdgeInsets.symmetric(horizontal: 400, vertical: 200)
           : const EdgeInsets.all(4),
       child: ListTile(
         onTap: () {
-          if (user.email != currentUser!.email) {
+          if (user.email != currentUser.email) {
             Navigator.push(
               context,
               MaterialPageRoute(

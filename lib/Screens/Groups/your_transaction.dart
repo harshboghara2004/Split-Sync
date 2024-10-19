@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:splitsync/Authentication/Screens/Welcome/welcome_screen.dart';
 import 'package:splitsync/Database/group_transaction.dart';
 import 'package:splitsync/Database/users_data.dart';
 import 'package:splitsync/Models/group.dart';
@@ -22,8 +23,7 @@ class YourTransaction extends StatefulWidget {
 }
 
 class _YourTransactionState extends State<YourTransaction> {
-
-    User? currentUser;
+  User? currentUser;
 
   _fetchData() async {
     List<String> members = widget.group.members;
@@ -60,6 +60,9 @@ class _YourTransactionState extends State<YourTransaction> {
   @override
   Widget build(BuildContext context) {
     currentUser = Provider.of<UserProvider>(context).currentUser;
+    if (currentUser == null) {
+      return const WelcomeScreen();
+    }
 
     return Scaffold(
       appBar: AppBar(

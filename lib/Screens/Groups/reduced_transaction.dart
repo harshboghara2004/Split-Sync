@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:splitsync/Algorithms/reduce_txs.dart';
+import 'package:splitsync/Authentication/Screens/Welcome/welcome_screen.dart';
 import 'package:splitsync/Database/users_data.dart';
 import 'package:splitsync/Models/group.dart';
 import 'package:splitsync/Models/user.dart';
@@ -17,7 +18,6 @@ class ReducedTransaction extends StatefulWidget {
 }
 
 class _ReducedTransactionState extends State<ReducedTransaction> {
-
   User? currentUser;
 
   getData() async {
@@ -61,6 +61,9 @@ class _ReducedTransactionState extends State<ReducedTransaction> {
   @override
   Widget build(BuildContext context) {
     currentUser = Provider.of<UserProvider>(context).currentUser;
+    if (currentUser == null) {
+      return const WelcomeScreen();
+    }
 
     return Scaffold(
       appBar: AppBar(

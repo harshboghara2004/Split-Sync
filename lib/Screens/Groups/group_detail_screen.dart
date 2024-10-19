@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:splitsync/Authentication/Screens/Welcome/welcome_screen.dart';
 import 'package:splitsync/Database/group_data.dart';
 import 'package:splitsync/Database/group_transaction.dart';
 import 'package:splitsync/Models/group.dart';
@@ -21,10 +22,12 @@ class GroupDetailsScreen extends StatefulWidget {
 }
 
 class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
-
   @override
   Widget build(BuildContext context) {
     final currentUser = Provider.of<UserProvider>(context).currentUser;
+    if (currentUser == null) {
+      return const WelcomeScreen();
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.group.name),
@@ -81,7 +84,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
                   itemCount: txs.length,
                   itemBuilder: (context, index) {
                     // print(txs[index].distribution);
-                    if (txs[index].creator == currentUser!.username) {
+                    if (txs[index].creator == currentUser.username) {
                       return Dismissible(
                         key: Key(txs[index].toString()),
                         onDismissed: (direction) async {
@@ -109,7 +112,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
                           gtx: txs[index],
                         ),
                       );
-                    }  
+                    }
                     return GroupTransactionCard(
                       gtx: txs[index],
                     );

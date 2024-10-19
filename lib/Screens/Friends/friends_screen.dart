@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:splitsync/Authentication/Screens/Welcome/welcome_screen.dart';
 import 'package:splitsync/Database/friends_data.dart';
 import 'package:splitsync/Database/transaction_data.dart';
 import 'package:splitsync/Database/users_data.dart';
@@ -63,6 +64,9 @@ class _FriendsScreenState extends State<FriendsScreen> {
   @override
   Widget build(BuildContext context) {
     currentUser = Provider.of<UserProvider>(context).currentUser;
+    if (currentUser == null) {
+      return const WelcomeScreen();
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Friends'),
@@ -90,14 +94,13 @@ class _FriendsScreenState extends State<FriendsScreen> {
           final bal = data[1];
 
           return ListView.builder(
-            itemCount: friends.length,
-            itemBuilder: (context, index) {
-              return UserCardFriend(
-                user: friends[index],
-                balance: bal[index],
-              );
-            }
-          );
+              itemCount: friends.length,
+              itemBuilder: (context, index) {
+                return UserCardFriend(
+                  user: friends[index],
+                  balance: bal[index],
+                );
+              });
         },
       ),
     );

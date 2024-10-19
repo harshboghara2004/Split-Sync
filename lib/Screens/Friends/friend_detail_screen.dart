@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:splitsync/Authentication/Screens/Welcome/welcome_screen.dart';
 import 'package:splitsync/Database/transaction_data.dart';
 import 'package:splitsync/Models/transaction.dart';
 import 'package:splitsync/Models/user.dart';
@@ -24,6 +25,7 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
   User? currentUser;
 
   _getTransactions() async {
+    if (currentUser == null) return [];
     final res = await TransactionData().getTxBwTwoUsers(
       user1: currentUser!.username,
       user2: widget.user.username,
@@ -43,6 +45,9 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
   @override
   Widget build(BuildContext context) {
     currentUser = Provider.of<UserProvider>(context).currentUser;
+    if (currentUser == null) {
+      return const WelcomeScreen();
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.user.username),
@@ -108,8 +113,7 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
                     itemCount: txs.length,
                     itemBuilder: (context, index) {
                       if (index > 0) {
-                        if (txs[index - 1].from ==
-                            currentUser!.username) {
+                        if (txs[index - 1].from == currentUser!.username) {
                           tmp -= txs[index - 1].amount;
                         } else {
                           tmp += txs[index - 1].amount;
@@ -120,10 +124,9 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
                         decoration: BoxDecoration(
                             border: Border.all(),
                             borderRadius: BorderRadius.circular(16),
-                            color:
-                                txs[index].from == currentUser!.username
-                                    ? const Color.fromARGB(255, 120, 200, 123)
-                                    : const Color.fromARGB(150, 249, 35, 60)),
+                            color: txs[index].from == currentUser!.username
+                                ? const Color.fromARGB(255, 120, 200, 123)
+                                : const Color.fromARGB(150, 249, 35, 60)),
                         child: ListTile(
                           title: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,7 +181,6 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
           );
         },
       ),
-      
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 50.0),
         child: Row(
@@ -251,7 +253,6 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
           ],
         ),
       ),
-      
     );
   }
 }

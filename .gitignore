@@ -11,3 +11,7 @@
 firebase.json
 pubspec.lock
 *.env
+.firebaserc
+/.dart_tool
+/.firebase
+/.github

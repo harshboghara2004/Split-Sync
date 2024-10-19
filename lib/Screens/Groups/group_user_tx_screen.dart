@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:splitsync/Authentication/Screens/Welcome/welcome_screen.dart';
 import 'package:splitsync/Database/group_transaction.dart';
 import 'package:splitsync/Models/transaction.dart';
 import 'package:splitsync/Models/user.dart';
@@ -45,6 +46,9 @@ class _GroupUserTxScreenState extends State<GroupUserTxScreen> {
   @override
   Widget build(BuildContext context) {
     currentUser = Provider.of<UserProvider>(context).currentUser;
+    if (currentUser == null) {
+      return const WelcomeScreen();
+    }
 
     return Scaffold(
       appBar: AppBar(

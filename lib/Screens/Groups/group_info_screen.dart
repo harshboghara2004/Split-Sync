@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:splitsync/Authentication/Screens/Welcome/welcome_screen.dart';
 import 'package:splitsync/Database/group_data.dart';
 import 'package:splitsync/Models/group.dart';
 import 'package:splitsync/Models/user.dart';
@@ -34,6 +35,9 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
   @override
   Widget build(BuildContext context) {
     final currentUser = Provider.of<UserProvider>(context).currentUser;
+    if (currentUser == null) {
+      return const WelcomeScreen();
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -60,7 +64,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
           }
           final [members, admins] = snapshot.data as List<List<User>>;
           for (var admin in admins) {
-            if (admin.username == currentUser!.username) {
+            if (admin.username == currentUser.username) {
               isAdmin = true;
               break;
             }
@@ -94,7 +98,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
                           ),
                         )
                       : const Text(''),
-                  currentUser!.username == widget.group.creator
+                  currentUser.username == widget.group.creator
                       ? Expanded(
                           child: Container(
                             margin: const EdgeInsets.symmetric(horizontal: 14),

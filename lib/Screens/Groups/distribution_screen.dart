@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:splitsync/Authentication/Screens/Welcome/welcome_screen.dart';
 import 'package:splitsync/Database/group_data.dart';
 import 'package:splitsync/Database/group_transaction.dart';
 import 'package:splitsync/Models/group.dart';
@@ -28,7 +29,6 @@ class _DistributionScreenState extends State<DistributionScreen> {
   final TextEditingController _newAmountController = TextEditingController();
   bool _first = true;
   User? currentUser;
-
 
   List<String> _selectedMembers = [];
   List<String> _editedMembers = [];
@@ -99,6 +99,9 @@ class _DistributionScreenState extends State<DistributionScreen> {
   @override
   Widget build(BuildContext context) {
     currentUser = Provider.of<UserProvider>(context).currentUser;
+    if (currentUser == null) {
+      return const WelcomeScreen();
+    }
 
     return FutureBuilder(
       future: _fetchData(),
@@ -212,7 +215,8 @@ class _DistributionScreenState extends State<DistributionScreen> {
                         distribution: distribution,
                       );
                       // ignore: unused_local_variable
-                      final res = await GroupTxsData().addGroupTransaction(gtx: gtx);
+                      final res =
+                          await GroupTxsData().addGroupTransaction(gtx: gtx);
                       // print(res);
                       Navigator.of(context).pop();
                     },
