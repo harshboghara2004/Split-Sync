@@ -41,7 +41,7 @@ class ReduceTxs {
       vals[edge['from'] - 1] -= double.parse(edge['amt']); 
     }
 
-    print(vals);
+    // print(vals);
 
     HeapPriorityQueue<List<double>> posHeap = HeapPriorityQueue<List<double>>(
         (a, b) =>
@@ -71,9 +71,9 @@ class ReduceTxs {
       int to = mx[1].toInt();
       int from = mn[1].toInt();
 
-      print(mx);
-      print(mn);
-      print('neext');
+      // print(mx);
+      // print(mn);
+      // print('neext');
 
       if (amt != 0.0) {
         newEdges.add({

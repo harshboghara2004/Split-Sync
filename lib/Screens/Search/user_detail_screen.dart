@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:splitsync/Database/friends_data.dart';
 import 'package:splitsync/Database/group_data.dart';
 import 'package:splitsync/Database/users_data.dart';
@@ -6,6 +7,7 @@ import 'package:splitsync/Models/user.dart';
 import 'dart:core';
 
 import 'package:splitsync/utils/constants.dart';
+import 'package:splitsync/utils/user_provider.dart';
 
 // ignore: must_be_immutable
 class UserDetailScreen extends StatefulWidget {
@@ -19,6 +21,7 @@ class UserDetailScreen extends StatefulWidget {
 }
 
 class _UserDetailScreenState extends State<UserDetailScreen> {
+  User? currentUser;
 //
   _fetchFriensList({
     required String friendsKey,
@@ -78,6 +81,8 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    currentUser = Provider.of<UserProvider>(context).currentUser;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.user.username),

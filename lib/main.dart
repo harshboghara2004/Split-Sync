@@ -1,8 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:splitsync/Authentication/Screens/Welcome/welcome_screen.dart';
+import 'package:splitsync/Screens/home_screen.dart';
 import 'package:splitsync/utils/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:splitsync/utils/user_provider.dart';
 
 // import 'package:firebase_auth/firebase_auth.dart';
 String? userDataString;
@@ -26,7 +30,14 @@ Future<void> main() async {
     print(e.toString());
   }
   print('app-start');
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -65,7 +76,23 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const WelcomeScreen(),
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.hasData) {
+              // User is logged in
+              return const HomeScreen();
+            } else {
+              // User is logged out
+              return const WelcomeScreen();
+            }
+          } else {
+            // Connection state is waiting or has an error
+            return const CircularProgressIndicator();
+          }
+        },
+      ),
     );
   }
 }

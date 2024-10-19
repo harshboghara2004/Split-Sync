@@ -7,6 +7,6 @@ import 'package:splitsync/Screens/Search/search_screen.dart';
 List<Widget> pages = [
   FriendsScreen(),
   SearchScreen(isInGroup: false,),
-  GroupScreen(),
-  ProfileScreen(),
+  const GroupScreen(),
+  const ProfileScreen(),
 ];

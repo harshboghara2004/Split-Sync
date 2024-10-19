@@ -3,6 +3,7 @@ import 'package:splitsync/Models/group_transaction.dart';
 import 'package:splitsync/Models/transaction.dart' as trans;
 
 class GroupTxsData {
+  // ignore: deprecated_member_use
   DatabaseReference groupTxsList = FirebaseDatabase(
           databaseURL: 'https://splitsync-91f14-default-rtdb.firebaseio.com')
       .ref('group_transactions');
@@ -168,7 +169,7 @@ class GroupTxsData {
       await newGtx.update({
         'key': key,
       });
-      print(newGtx.key!);
+      // print(newGtx.key!);
       print('gtx-added');
     } catch (e) {
       return e.toString();
@@ -190,13 +191,13 @@ class GroupTxsData {
       for (var entry in dataList) {
         try {
           Map<String, double> convertedMap = {};
-          print(entry.value['distribution']);
+          // print(entry.value['distribution']);
           if (entry.value['distribution'] != null) {
             entry.value['distribution'].forEach((key, value) async {
               convertedMap[key] = (value as num).toDouble();
             });
           }
-          print(convertedMap);
+          // print(convertedMap);
           final gt = GroupTransaction(
             key: entry.key,
             groupKey: entry.value['groupKey'],

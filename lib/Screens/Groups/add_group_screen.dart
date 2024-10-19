@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:splitsync/Models/group.dart';
-import 'package:splitsync/utils/constants.dart';
+import 'package:splitsync/utils/user_provider.dart';
 
 // ignore: must_be_immutable
 class AddGroupScreen extends StatefulWidget {
-  AddGroupScreen({
+  const AddGroupScreen({
     super.key,
   });
 
@@ -25,6 +26,8 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = Provider.of<UserProvider>(context).currentUser!;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Split-Sync'),
@@ -66,13 +69,24 @@ class _AddGroupScreenState extends State<AddGroupScreen> {
       ),
       bottomNavigationBar: InkWell(
         onTap: () {
-          Navigator.pop(context,
+          if (_groupNameController.text.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  "Please Enter Group Name",
+                ),
+              ),
+            );
+            return;
+          }
+          Navigator.pop(
+            context,
             Group(
               name: _groupNameController.text,
-              creator: currentUser!.username,
+              creator: currentUser.username,
               description: _descriptionController.text,
-              members: [currentUser!.username],
-              admin: [currentUser!.username],
+              members: [currentUser.username],
+              admin: [currentUser.username],
             ),
           );
         },

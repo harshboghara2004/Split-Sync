@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:splitsync/Database/group_data.dart';
 import 'package:splitsync/Database/group_transaction.dart';
 import 'package:splitsync/Models/group.dart';
 import 'package:splitsync/Models/group_transaction.dart';
 import 'package:splitsync/Models/user.dart';
 import 'package:splitsync/Widgets/checkbox_card.dart';
-import 'package:splitsync/utils/constants.dart';
+import 'package:splitsync/utils/user_provider.dart';
 
 class DistributionScreen extends StatefulWidget {
   const DistributionScreen({
@@ -26,6 +27,8 @@ class DistributionScreen extends StatefulWidget {
 class _DistributionScreenState extends State<DistributionScreen> {
   final TextEditingController _newAmountController = TextEditingController();
   bool _first = true;
+  User? currentUser;
+
 
   List<String> _selectedMembers = [];
   List<String> _editedMembers = [];
@@ -95,6 +98,8 @@ class _DistributionScreenState extends State<DistributionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    currentUser = Provider.of<UserProvider>(context).currentUser;
+
     return FutureBuilder(
       future: _fetchData(),
       builder: (context, snapshot) {
@@ -164,7 +169,7 @@ class _DistributionScreenState extends State<DistributionScreen> {
                               dist: distribution,
                             );
                           }
-                          print(newDist);
+                          // print(newDist);
                           setState(() {
                             if (value != null && value) {
                               _selectedMembers.add(member.username);
@@ -198,7 +203,7 @@ class _DistributionScreenState extends State<DistributionScreen> {
                   margin: const EdgeInsets.only(bottom: 5),
                   child: ElevatedButton(
                     onPressed: () async {
-                      print(distribution);
+                      // print(distribution);
                       final gtx = GroupTransaction(
                         groupKey: widget.group.key!,
                         amount: widget.total,
@@ -206,9 +211,9 @@ class _DistributionScreenState extends State<DistributionScreen> {
                         description: widget.desc,
                         distribution: distribution,
                       );
-                      final res =
-                          await GroupTxsData().addGroupTransaction(gtx: gtx);
-                      print(res);
+                      // ignore: unused_local_variable
+                      final res = await GroupTxsData().addGroupTransaction(gtx: gtx);
+                      // print(res);
                       Navigator.of(context).pop();
                     },
                     child: const Text('Save'),

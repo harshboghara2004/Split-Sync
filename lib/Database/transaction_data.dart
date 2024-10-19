@@ -12,7 +12,7 @@ class TransactionData {
     DatabaseReference newTransactionRef = transactionsListRef.push();
     try {
       await newTransactionRef.set(t.toJson());
-      print(newTransactionRef.key);
+      // print(newTransactionRef.key);
       print('transaction-made-success');
     } catch (e) {
       return (e.toString());

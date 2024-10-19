@@ -45,8 +45,6 @@ class _AddTranscationScreenState extends State<AddTranscationScreen> {
     } catch (e) {
       return e.toString();
     }
-
-
   }
 
   @override

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:splitsync/Database/group_transaction.dart';
 import 'package:splitsync/Database/users_data.dart';
 import 'package:splitsync/Models/group.dart';
 import 'package:splitsync/Models/transaction.dart';
 import 'package:splitsync/Models/user.dart';
-import 'package:splitsync/Widgets/user_card.dart';
+import 'package:splitsync/Widgets/user_card_group.dart';
 import 'package:splitsync/utils/constants.dart';
+import 'package:splitsync/utils/user_provider.dart';
 
 // ignore: must_be_immutable
 class YourTransaction extends StatefulWidget {
@@ -20,6 +22,9 @@ class YourTransaction extends StatefulWidget {
 }
 
 class _YourTransactionState extends State<YourTransaction> {
+
+    User? currentUser;
+
   _fetchData() async {
     List<String> members = widget.group.members;
     List<User> groupMembers = [];
@@ -54,6 +59,8 @@ class _YourTransactionState extends State<YourTransaction> {
 
   @override
   Widget build(BuildContext context) {
+    currentUser = Provider.of<UserProvider>(context).currentUser;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(

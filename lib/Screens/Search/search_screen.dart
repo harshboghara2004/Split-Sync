@@ -53,7 +53,7 @@ class _SearchScreenState extends State<SearchScreen> {
       });
     });
 
-    print(_searchResults);
+    // print(_searchResults);
   }
 
   @override

@@ -1,9 +1,10 @@
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:splitsync/Authentication/Methods/email_login.dart';
 import 'package:splitsync/Database/users_data.dart';
+import 'package:splitsync/Models/user.dart';
 import 'package:splitsync/Screens/home_screen.dart';
-
+import 'package:splitsync/utils/user_provider.dart';
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../../utils/constants.dart';
 import '../../Signup/signup_screen.dart';
@@ -18,7 +19,6 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -30,11 +30,6 @@ class _LoginFormState extends State<LoginForm> {
 
     final res =
         await AuthEmailMethod().loginUser(email: email, password: password);
-
-    final user = await UsersData().getUserByEmail(emailToFind: email);
-    final key = await UsersData().getFriendKeyByEmail(email: email);
-    UsersData.setCurrentUser(user: user, key: key);
-    
     return res;
   }
 
@@ -83,13 +78,21 @@ class _LoginFormState extends State<LoginForm> {
               setState(() {
                 _isLoading = false;
               });
+              print(res);
               if (res == 'Success') {
+                User user = await UsersData()
+                    .getUserByEmail(emailToFind: _emailController.text);
+                final key = await UsersData()
+                    .getFriendKeyByEmail(email: _emailController.text);
+                user.friendsKey = key;
                 // ignore: use_build_context_synchronously
-                Navigator.pushReplacement(
+                Provider.of<UserProvider>(context, listen: false).setUser(user);
+                // ignore: use_build_context_synchronously
+                print('to-home');
+                Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomeScreen(),
-                  ),
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                  (Route<dynamic> route) => false, // Remove all routes
                 );
               }
             },
@@ -102,9 +105,7 @@ class _LoginFormState extends State<LoginForm> {
                           color: Colors.white,
                         ),
                         SizedBox(width: 8.0),
-                        Text(
-                          "Loading..."
-                        ),
+                        Text("Loading..."),
                       ],
                     ),
                   )

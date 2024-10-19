@@ -30,13 +30,15 @@ class GroupData {
     }
   }
 
-  Future<List<Group>> getAllGroups() async {
+  Future<List<Group>> getAllGroups(User currentUser) async {
     List<Group> groups = [];
     try {
       final snap = await dbGroup.get();
       for (var g in snap.docs) {
         final group = Group.fromJson(g.data());
-        groups.add(group);
+        if (group.members.contains(currentUser.username)) {
+          groups.add(group);
+        }
       }
     } catch (e) {
       print(e.toString());
@@ -51,6 +53,26 @@ class GroupData {
     try {
       final data = await dbGroup.doc(key).get();
       final members = data['members'];
+      for (var member in members) {
+        final user =
+            await UsersData().getUserByUsername(usernameToFind: member);
+        if (user != null) {
+          res.add(user);
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    return res;
+  }
+
+  Future<List<User>> getAllAdmins({
+    required String key,
+  }) async {
+    List<User> res = [];
+    try {
+      final data = await dbGroup.doc(key).get();
+      final members = data['admin'];
       for (var member in members) {
         final user =
             await UsersData().getUserByUsername(usernameToFind: member);

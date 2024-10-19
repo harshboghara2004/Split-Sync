@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:splitsync/Database/group_data.dart';
 import 'package:splitsync/Models/group.dart';
+import 'package:splitsync/Models/user.dart';
 import 'package:splitsync/Screens/Groups/add_group_screen.dart';
 import 'package:splitsync/Widgets/group_card.dart';
+import 'package:splitsync/utils/user_provider.dart';
 
 class GroupScreen extends StatefulWidget {
   const GroupScreen({super.key});
@@ -12,19 +15,20 @@ class GroupScreen extends StatefulWidget {
 }
 
 class _GroupScreenState extends State<GroupScreen> {
-  _getGroups() async {
-    final groups = await GroupData().getAllGroups();
+  _getGroups(User currentUser) async {
+    final groups = await GroupData().getAllGroups(currentUser);
     return groups;
   }
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = Provider.of<UserProvider>(context).currentUser;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Groups'),
+        title: const Text('Your Groups'),
       ),
       body: FutureBuilder(
-        future: _getGroups(),
+        future: _getGroups(currentUser!),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -43,7 +47,7 @@ class _GroupScreenState extends State<GroupScreen> {
             );
           }
           final groups = snapshot.data as List<Group>;
-           if (groups.isEmpty) {
+          if (groups.isEmpty) {
             return const Center(
               child: Text('No Groups'),
             );
@@ -61,12 +65,13 @@ class _GroupScreenState extends State<GroupScreen> {
           final group = await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddGroupScreen(),
+              builder: (context) => const AddGroupScreen(),
             ),
           );
+          // ignore: unused_local_variable
           final res = await GroupData().addGroup(group: group);
           setState(() {});
-          print(res);
+          // print(res);
         },
         child: const Icon(Icons.add),
       ),

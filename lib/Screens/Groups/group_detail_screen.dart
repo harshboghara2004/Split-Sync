@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:splitsync/Database/group_data.dart';
 import 'package:splitsync/Database/group_transaction.dart';
 import 'package:splitsync/Models/group.dart';
@@ -8,7 +9,7 @@ import 'package:splitsync/Screens/Groups/group_info_screen.dart';
 import 'package:splitsync/Screens/Groups/reduced_transaction.dart';
 import 'package:splitsync/Screens/Groups/your_transaction.dart';
 import 'package:splitsync/Widgets/group_transaction_card.dart';
-import 'package:splitsync/utils/constants.dart';
+import 'package:splitsync/utils/user_provider.dart';
 
 class GroupDetailsScreen extends StatefulWidget {
   const GroupDetailsScreen({super.key, required this.group});
@@ -20,8 +21,10 @@ class GroupDetailsScreen extends StatefulWidget {
 }
 
 class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
+
   @override
   Widget build(BuildContext context) {
+    final currentUser = Provider.of<UserProvider>(context).currentUser;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.group.name),

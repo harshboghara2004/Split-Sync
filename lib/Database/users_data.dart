@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:splitsync/Authentication/Methods/email_login.dart';
 import 'package:splitsync/Models/user.dart';
-import 'package:splitsync/utils/constants.dart';
 
 class UsersData {
   // ignore: deprecated_member_use
@@ -47,7 +46,7 @@ class UsersData {
     try {
       await newUserRef.set(user.toJson());
       String key = newUserRef.key!;
-      print(key);
+      // print(key);
       print('user-added');
       await db.collection('friends').doc(key).set({
         'username': user.username,
@@ -55,7 +54,7 @@ class UsersData {
       }, SetOptions(merge: true));
       print('friend-added');
     } catch (e) {
-      print(e);
+      print(e.toString());
       return e.toString();
     }
     return 'Success';
@@ -148,14 +147,5 @@ class UsersData {
       print(e.toString());
     }
     return user!;
-  }
-
-  static void setCurrentUser({
-    required User user,
-    required String key,
-  }) {
-    user.friendsKey = key;
-    currentUser = user;
-    print('Set-current-user-${user.username}');
   }
 }

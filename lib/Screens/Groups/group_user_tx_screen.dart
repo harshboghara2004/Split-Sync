@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:splitsync/Database/group_transaction.dart';
 import 'package:splitsync/Models/transaction.dart';
 import 'package:splitsync/Models/user.dart';
 import 'package:splitsync/utils/constants.dart';
+import 'package:splitsync/utils/user_provider.dart';
 
 class GroupUserTxScreen extends StatefulWidget {
   const GroupUserTxScreen({
@@ -19,6 +21,7 @@ class GroupUserTxScreen extends StatefulWidget {
 
 class _GroupUserTxScreenState extends State<GroupUserTxScreen> {
   double balance = 0, tmp = 0;
+  User? currentUser;
 
   _fetchData() async {
     List<Transaction> txs =
@@ -41,6 +44,8 @@ class _GroupUserTxScreenState extends State<GroupUserTxScreen> {
 
   @override
   Widget build(BuildContext context) {
+    currentUser = Provider.of<UserProvider>(context).currentUser;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(

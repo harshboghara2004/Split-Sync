@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:splitsync/Database/group_data.dart';
 import 'package:splitsync/Models/group.dart';
 import 'package:splitsync/Models/user.dart';
 import 'package:splitsync/Screens/Groups/group_screen.dart';
 import 'package:splitsync/Screens/Search/search_screen.dart';
-import 'package:splitsync/Widgets/user_card.dart';
-import 'package:splitsync/utils/constants.dart';
+import 'package:splitsync/Widgets/user_card_group.dart';
+import 'package:splitsync/utils/user_provider.dart';
 
 class GroupInfoScreen extends StatefulWidget {
   const GroupInfoScreen({
@@ -21,15 +22,19 @@ class GroupInfoScreen extends StatefulWidget {
 
 class _GroupInfoScreenState extends State<GroupInfoScreen> {
   bool reduce = false;
+  bool isAdmin = false;
 
   _getData() async {
-    final res = await GroupData().getAllMembers(key: widget.group.key!);
+    final members = await GroupData().getAllMembers(key: widget.group.key!);
+    final admins = await GroupData().getAllAdmins(key: widget.group.key!);
     reduce = await GroupData().getReduceValue(key: widget.group.key!);
-    return res;
+    return [members, admins];
   }
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = Provider.of<UserProvider>(context).currentUser;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.group.name),
@@ -53,33 +58,42 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
               child: Text('No Data'),
             );
           }
-          List<User> members = snapshot.data as List<User>;
+          final [members, admins] = snapshot.data as List<List<User>>;
+          for (var admin in admins) {
+            if (admin.username == currentUser!.username) {
+              isAdmin = true;
+              break;
+            }
+          }
+          // print(isAdmin);
           return Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 14),
-                      child: ElevatedButton.icon(
-                        onPressed: () async {
-                          GroupData.setCurrentGroup(group: widget.group);
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => SearchScreen(
-                                isInGroup: true,
-                              ),
+                  isAdmin
+                      ? Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 14),
+                            child: ElevatedButton.icon(
+                              onPressed: () async {
+                                GroupData.setCurrentGroup(group: widget.group);
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => SearchScreen(
+                                      isInGroup: true,
+                                    ),
+                                  ),
+                                );
+                                setState(() {});
+                              },
+                              icon: const Icon(Icons.add_circle),
+                              label: const Text('Add Member'),
                             ),
-                          );
-                          setState(() {});
-                        },
-                        icon: const Icon(Icons.add_circle),
-                        label: const Text('Add Member'),
-                      ),
-                    ),
-                  ),
+                          ),
+                        )
+                      : const Text(''),
                   currentUser!.username == widget.group.creator
                       ? Expanded(
                           child: Container(
@@ -110,28 +124,31 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
                     user: members[index],
                     balance: 'Group',
                     inGroup: true,
+                    group: widget.group,
                   ),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 50),
-                margin: const EdgeInsets.symmetric(vertical: 50),
-                child: ElevatedButton.icon(
-                  onPressed: () async {
-                    final res =
-                        await GroupData().toggleReduce(key: widget.group.key!);
-                    setState(() {
-                      reduce = res;
-                    });
-                  },
-                  icon: (reduce) == false
-                      ? const Icon(Icons.add)
-                      : const Icon(Icons.task_alt_rounded),
-                  label: (reduce) == false
-                      ? const Text('Enable Transaction Reduction')
-                      : const Text('Transaction Reduction Enabled'),
-                ),
-              ),
+              widget.group.admin.contains(currentUser.username)
+                  ? Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      margin: const EdgeInsets.symmetric(vertical: 50),
+                      child: ElevatedButton.icon(
+                        onPressed: () async {
+                          final res = await GroupData()
+                              .toggleReduce(key: widget.group.key!);
+                          setState(() {
+                            reduce = res;
+                          });
+                        },
+                        icon: (reduce) == false
+                            ? const Icon(Icons.add)
+                            : const Icon(Icons.task_alt_rounded),
+                        label: (reduce) == false
+                            ? const Text('Enable Transaction Reduction')
+                            : const Text('Transaction Reduction Enabled'),
+                      ),
+                    )
+                  : const SizedBox(),
             ],
           );
         },

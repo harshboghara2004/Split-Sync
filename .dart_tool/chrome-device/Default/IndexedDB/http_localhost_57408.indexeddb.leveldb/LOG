@@ -1,0 +1,25 @@
+2024/09/14-17:18:25.668 8307 Reusing MANIFEST /private/var/folders/d5/3y9xv5xx31zd2gq17240lhzm0000gn/T/flutter_tools.W1AitV/flutter_tools_chrome_device.rvM3nf/Default/IndexedDB/http_localhost_57408.indexeddb.leveldb/MANIFEST-000001
+2024/09/14-17:18:25.669 8307 Recovering log #181
+2024/09/14-17:18:25.669 8307 Reusing old log /private/var/folders/d5/3y9xv5xx31zd2gq17240lhzm0000gn/T/flutter_tools.W1AitV/flutter_tools_chrome_device.rvM3nf/Default/IndexedDB/http_localhost_57408.indexeddb.leveldb/000181.log 
+2024/09/14-17:18:25.669 8307 Delete type=2 #179
+2024/09/14-17:18:25.702 b603 Level-0 table #186: started
+2024/09/14-17:18:25.706 b603 Level-0 table #186: 3277 bytes OK
+2024/09/14-17:18:25.715 b603 Delete type=0 #181
+2024/09/14-17:18:25.715 8307 Manual compaction at level-0 from '\x005\x00\x00\x00' @ 72057594037927935 : 1 .. '\x006\x00\x00\x00' @ 0 : 0; will stop at '\x005\x00\x00\x05' @ 2451 : 1
+2024/09/14-17:18:25.715 8307 Compacting 1@0 + 1@1 files
+2024/09/14-17:18:25.719 8307 Generated table #187@0: 105 keys, 3445 bytes
+2024/09/14-17:18:25.719 8307 Compacted 1@0 + 1@1 files => 3445 bytes
+2024/09/14-17:18:25.727 8307 compacted to: files[ 0 1 1 0 0 0 0 ]
+2024/09/14-17:18:25.728 8307 Delete type=2 #186
+2024/09/14-17:18:25.728 8307 Manual compaction at level-0 from '\x005\x00\x00\x05' @ 2451 : 1 .. '\x006\x00\x00\x00' @ 0 : 0; will stop at (end)
+2024/09/14-17:19:15.529 8703 Level-0 table #189: started
+2024/09/14-17:19:15.535 8703 Level-0 table #189: 3288 bytes OK
+2024/09/14-17:19:15.543 8703 Delete type=2 #183
+2024/09/14-17:19:15.543 8703 Delete type=0 #185
+2024/09/14-17:19:15.544 8703 Manual compaction at level-0 from '\x006\x00\x00\x00' @ 72057594037927935 : 1 .. '\x007\x00\x00\x00' @ 0 : 0; will stop at '\x006\x00\x00\x05' @ 2496 : 1
+2024/09/14-17:19:15.544 8703 Compacting 1@0 + 1@1 files
+2024/09/14-17:19:15.548 8703 Generated table #190@0: 109 keys, 3482 bytes
+2024/09/14-17:19:15.548 8703 Compacted 1@0 + 1@1 files => 3482 bytes
+2024/09/14-17:19:15.555 8703 compacted to: files[ 0 1 1 0 0 0 0 ]
+2024/09/14-17:19:15.555 8703 Delete type=2 #189
+2024/09/14-17:19:15.555 8703 Manual compaction at level-0 from '\x006\x00\x00\x05' @ 2496 : 1 .. '\x007\x00\x00\x00' @ 0 : 0; will stop at (end)

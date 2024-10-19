@@ -43,8 +43,8 @@ class FriendsData {
     required String key2,
   }) async {
     try {
-      print(key1);
-      print(key2);
+      // print(key1);
+      // print(key2);
       await db.collection('friends').doc(key1).update({
         'friends': FieldValue.arrayUnion([key2])
       });

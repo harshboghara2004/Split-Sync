@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:splitsync/Algorithms/reduce_txs.dart';
 import 'package:splitsync/Database/users_data.dart';
 import 'package:splitsync/Models/group.dart';
-import 'package:splitsync/Widgets/user_card.dart';
-import 'package:splitsync/utils/constants.dart';
+import 'package:splitsync/Models/user.dart';
+import 'package:splitsync/Widgets/user_card_group.dart';
+import 'package:splitsync/utils/user_provider.dart';
 
 class ReducedTransaction extends StatefulWidget {
   const ReducedTransaction({super.key, required this.group});
@@ -15,11 +17,15 @@ class ReducedTransaction extends StatefulWidget {
 }
 
 class _ReducedTransactionState extends State<ReducedTransaction> {
+
+  User? currentUser;
+
   getData() async {
     final graph = await ReduceTxs().getData(groupKey: widget.group.key!);
-    print(graph);
+    // print(graph);
     final reduced = ReduceTxs().solveData(graphData: graph);
-    print(reduced);
+    // print(reduced);
+    print('i am here');
     var id = 0;
     (reduced['nodes'] as Map<int, String>).forEach((key, value) {
       if (value == currentUser!.username) {
@@ -54,9 +60,11 @@ class _ReducedTransactionState extends State<ReducedTransaction> {
 
   @override
   Widget build(BuildContext context) {
+    currentUser = Provider.of<UserProvider>(context).currentUser;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Split-Sync'),
+        title: const Text('Your Transactions'),
       ),
       body: FutureBuilder(
         future: getData(),
@@ -81,12 +89,12 @@ class _ReducedTransactionState extends State<ReducedTransaction> {
             );
           }
           final data = snapshot.data as List<Map<String, dynamic>>;
-          print(data);
+          // print(data);
           return ListView.builder(
             itemCount: data.length,
             itemBuilder: (context, index) => UserCard(
               user: data[index]['user'],
-              balance: data[index]['balance'],
+              balance: double.parse(data[index]['balance']),
               inGroup: true,
             ),
           );

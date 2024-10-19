@@ -1,55 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:splitsync/Authentication/Methods/email_login.dart';
+import 'package:provider/provider.dart';
 import 'package:splitsync/Database/friends_data.dart';
 import 'package:splitsync/Database/transaction_data.dart';
 import 'package:splitsync/Database/users_data.dart';
 import 'package:splitsync/Models/user.dart';
-import 'package:splitsync/Widgets/user_card.dart';
-import 'package:splitsync/utils/constants.dart';
+import 'package:splitsync/Widgets/user_card_friend.dart';
+import 'package:splitsync/utils/user_provider.dart';
 
 class FriendsScreen extends StatefulWidget {
+  const FriendsScreen({super.key});
 
   @override
   State<FriendsScreen> createState() => _FriendsScreenState();
 }
 
 class _FriendsScreenState extends State<FriendsScreen> {
-  
+  User? currentUser;
 
   _getAllFriends() async {
-    final currentUserEmail = await AuthEmailMethod().getCurrentUserEmail();
-    final currentUserFriendsKey =
-        await UsersData().getFriendKeyByEmail(email: currentUserEmail!);
+    final currentUserFriendsKey = currentUser!.friendsKey;
     final friendKeysList = await FriendsData()
-        .getFriendListOfKeys(friendsKey: currentUserFriendsKey);
+        .getFriendListOfKeys(friendsKey: currentUserFriendsKey!);
     List<User> friendList = [];
     List<double> balance = [];
 
     for (var key in friendKeysList) {
       var user = await UsersData().getUserByKey(keyToFind: key);
       if (user != null) {
-        final bal = await _getBalance(username: user.username);
+        final bal = await _getBalance(
+            user1: currentUser!.username, user2: user.username);
         if (bal != 0.0) {
           friendList.add(user);
           balance.add(bal);
         }
       }
     }
+
     return [friendList, balance];
   }
 
   Future<double> _getBalance({
-    required String username,
+    required String user1,
+    required String user2,
   }) async {
-
+    // print(user1);print(user2);
     final res = await TransactionData().getTxBwTwoUsers(
-      user1: currentUser!.username,
-      user2: username,
+      user1: user1,
+      user2: user2,
     );
+    // print(res);
     double balance = 0.0;
     for (var t in res) {
-      // print(balance);
-      if (t.from == currentUser!.username) {
+      if (t.from == user1) {
         balance += t.amount;
       } else {
         balance -= t.amount;
@@ -60,9 +62,10 @@ class _FriendsScreenState extends State<FriendsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    currentUser = Provider.of<UserProvider>(context).currentUser;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Friends'),
+        title: const Text('Your Friends'),
       ),
       body: FutureBuilder(
         future: _getAllFriends(),
@@ -88,11 +91,12 @@ class _FriendsScreenState extends State<FriendsScreen> {
 
           return ListView.builder(
             itemCount: friends.length,
-            itemBuilder: (context, index) => UserCard(
-              user: friends[index],
-              balance: bal[index],
-              inGroup: false,
-            ),
+            itemBuilder: (context, index) {
+              return UserCardFriend(
+                user: friends[index],
+                balance: bal[index],
+              );
+            }
           );
         },
       ),

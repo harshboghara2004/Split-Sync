@@ -1,14 +1,18 @@
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:splitsync/Database/transaction_data.dart';
 import 'package:splitsync/Models/transaction.dart';
 import 'package:splitsync/Models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:splitsync/Screens/Friends/add_transaction_screen.dart';
-import 'package:splitsync/utils/constants.dart';
+import 'package:splitsync/utils/user_provider.dart';
 
 // ignore: must_be_immutable
 class FriendDetailScreen extends StatefulWidget {
-  FriendDetailScreen({super.key, required this.user});
+  FriendDetailScreen({
+    super.key,
+    required this.user,
+  });
 
   User user;
   @override
@@ -17,6 +21,7 @@ class FriendDetailScreen extends StatefulWidget {
 
 class _FriendDetailScreenState extends State<FriendDetailScreen> {
   double balance = 0, tmp = 0;
+  User? currentUser;
 
   _getTransactions() async {
     final res = await TransactionData().getTxBwTwoUsers(
@@ -37,6 +42,7 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    currentUser = Provider.of<UserProvider>(context).currentUser;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.user.username),
@@ -62,14 +68,14 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
           }
           List<Transaction> txs = snapshot.data! as List<Transaction>;
           tmp = balance;
-          print(balance);
+          // print(balance);
+          // return Text('hello');
           return Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 padding: const EdgeInsets.all(16),
                 margin: const EdgeInsets.all(16),
-                width: double.infinity,
+                width: double.parse("200"),
                 decoration: BoxDecoration(
                   border: Border.all(),
                   borderRadius: BorderRadius.circular(10),
@@ -83,7 +89,7 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.left,
                       )
                     : Text(
                         'you will give ₹${(balance).abs()}',
@@ -92,7 +98,7 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.left,
                       ),
               ),
               Expanded(
@@ -102,7 +108,8 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
                     itemCount: txs.length,
                     itemBuilder: (context, index) {
                       if (index > 0) {
-                        if (txs[index - 1].from == currentUser!.username) {
+                        if (txs[index - 1].from ==
+                            currentUser!.username) {
                           tmp -= txs[index - 1].amount;
                         } else {
                           tmp += txs[index - 1].amount;
@@ -111,12 +118,12 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
                       return Container(
                         margin: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(16),
-                          color: txs[index].from == currentUser!.username
-                              ? Colors.green
-                              : Colors.red,
-                        ),
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(16),
+                            color:
+                                txs[index].from == currentUser!.username
+                                    ? const Color.fromARGB(255, 120, 200, 123)
+                                    : const Color.fromARGB(150, 249, 35, 60)),
                         child: ListTile(
                           title: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,8 +147,26 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
                               ).format(txs[index].date!)),
                             ],
                           ),
-                          trailing: Text(
-                            txs[index].amount.toString(),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                txs[index].from == currentUser!.username
+                                    ? "+"
+                                    : "-",
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                txs[index].amount.toString(),
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ), // Right side
                         ),
                       );
@@ -153,6 +178,7 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
           );
         },
       ),
+      
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 50.0),
         child: Row(
@@ -225,6 +251,7 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
           ],
         ),
       ),
+      
     );
   }
 }
