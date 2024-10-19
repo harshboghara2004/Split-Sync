@@ -14,4 +14,4 @@ pubspec.lock
 .firebaserc
 /.firebase
 /.github
-/.dart_tool
+/.dart_tool/chrome-device
